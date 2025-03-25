@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Simulasi Kredit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex items-center justify-center p-4">
+    <div class="bg-gray-800 p-8 rounded-xl shadow-2xl w-full max-w-4xl">
+        <h1 class="text-3xl font-bold mb-6 text-center text-blue-400">🏦 Kalkulator Simulasi Kredit</h1>
+        
+        <div class="grid md:grid-cols-3 gap-4 mb-6">
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Jumlah Dana Pinjaman</label>
+                <input 
+                    type="text" 
+                    id="principalInput" 
+                    placeholder="Masukkan jumlah dana"
+                    class="w-full bg-gray-700 border-gray-600 text-white rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                >
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Tenor (Bulan)</label>
+                <input 
+                    type="number" 
+                    id="tenorInput" 
+                    min="1" 
+                    max="60" 
+                    value="12"
+                    class="w-full bg-gray-700 border-gray-600 text-white rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                >
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Bunga (%)</label>
+                <input 
+                    type="number" 
+                    id="interestInput" 
+                    min="0.1" 
+                    max="50" 
+                    step="0.1" 
+                    value="5"
+                    class="w-full bg-gray-700 border-gray-600 text-white rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                >
+            </div>
+        </div>
+        
+        <div class="text-center mb-6">
+            <button 
+                id="calculateBtn" 
+                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition duration-300"
+            >
+                Hitung Simulasi Kredit
+            </button>
+        </div>
+        
+        <div id="resultSection" class="hidden">
+            <div class="grid md:grid-cols-3 gap-4 mb-6">
+                <div class="bg-gray-700 p-4 rounded-lg text-center">
+                    <h3 class="text-gray-400 mb-2">Bunga Bulanan</h3>
+                    <p id="monthlyInterestResult" class="text-xl font-bold text-blue-400"></p>
+                </div>
+                <div class="bg-gray-700 p-4 rounded-lg text-center">
+                    <h3 class="text-gray-400 mb-2">Total Bunga</h3>
+                    <p id="totalInterestResult" class="text-xl font-bold text-blue-400"></p>
+                </div>
+                <div class="bg-gray-700 p-4 rounded-lg text-center">
+                    <h3 class="text-gray-400 mb-2">Total Pinjaman</h3>
+                    <p id="totalAmountResult" class="text-xl font-bold text-blue-400"></p>
+                </div>
+            </div>
+            
+            <div class="bg-gray-700 p-4 rounded-lg mb-6">
+                <h3 class="text-xl font-bold text-gray-300 mb-4">Rincian Angsuran</h3>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="text-center">
+                        <h4 class="text-gray-400 mb-2">Bulanan</h4>
+                        <p id="monthlyInstallmentResult" class="font-bold text-white"></p>
+                    </div>
+                    <div class="text-center">
+                        <h4 class="text-gray-400 mb-2">Mingguan</h4>
+                        <p id="weeklyInstallmentResult" class="font-bold text-white"></p>
+                    </div>
+                    <div class="text-center">
+                        <h4 class="text-gray-400 mb-2">Harian</h4>
+                        <p id="dailyInstallmentResult" class="font-bold text-white"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <canvas id="loanChart" class="w-full h-64"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // Fungsi format Rupiah
+        function formatRupiah(angka) {
+            return new Intl.NumberFormat('id-ID', { 
+                style: 'currency', 
+                currency: 'IDR',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(angka);
+        }
+
+        // Tambahkan event listener untuk format Rupiah saat input
+        const principalInput = document.getElementById('principalInput');
+        principalInput.addEventListener('input', function(e) {
+            // Hapus karakter non-angka
+            let value = this.value.replace(/[^\d]/g, '');
+            
+            // Format Rupiah
+            this.value = formatRupiah(value);
+        });
+
+        // Fungsi kalkulasi kredit
+        function calculateLoan() {
+            // Ambil nilai input dan bersihkan format Rupiah
+            const principal = parseFloat(principalInput.value.replace(/[^\d]/g, ''));
+            const tenor = parseFloat(document.getElementById('tenorInput').value);
+            const interestRate = parseFloat(document.getElementById('interestInput').value);
+
+            // Validasi input
+            if (isNaN(principal) || isNaN(tenor) || isNaN(interestRate)) {
+                alert('Silakan masukkan semua input dengan benar');
+                return;
+            }
+
+            // Hitung simulasi kredit
+            const monthlyInterest = principal * (interestRate / 100);
+            const totalInterest = monthlyInterest * tenor;
+            const totalAmount = principal + totalInterest;
+            const monthlyInstallment = totalAmount / tenor;
+            const weeklyInstallment = monthlyInstallment / 4;
+            const dailyInstallment = monthlyInstallment / 30;
+
+            // Tampilkan hasil
+            document.getElementById('monthlyInterestResult').textContent = formatRupiah(monthlyInterest);
+            document.getElementById('totalInterestResult').textContent = formatRupiah(totalInterest);
+            document.getElementById('totalAmountResult').textContent = formatRupiah(totalAmount);
+            
+            document.getElementById('monthlyInstallmentResult').textContent = formatRupiah(monthlyInstallment);
+            document.getElementById('weeklyInstallmentResult').textContent = formatRupiah(weeklyInstallment);
+            document.getElementById('dailyInstallmentResult').textContent = formatRupiah(dailyInstallment);
+
+            // Tampilkan section hasil
+            document.getElementById('resultSection').classList.remove('hidden');
+
+            // Buat grafik
+            createLoanChart(principal, totalInterest, totalAmount);
+        }
+
+        // Fungsi buat chart
+        function createLoanChart(principal, totalInterest, totalAmount) {
+            const ctx = document.getElementById('loanChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Pokok Pinjaman', 'Total Bunga', 'Total Pembayaran'],
+                    datasets: [{
+                        data: [principal, totalInterest, totalAmount],
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.6)',
+                            'rgba(255, 99, 132, 0.6)',
+                            'rgba(54, 162, 235, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false },
+                        title: {
+                            display: true,
+                            text: 'Grafik Perbandingan Pinjaman',
+                            color: 'white'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: 'white' },
+                            grid: { color: 'rgba(255,255,255,0.1)' }
+                        },
+                        x: {
+                            ticks: { color: 'white' },
+                            grid: { color: 'rgba(255,255,255,0.1)' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Tambahkan event listener ke tombol
+        document.getElementById('calculateBtn').addEventListener('click', calculateLoan);
+    </script>
+</body>
+</html>
