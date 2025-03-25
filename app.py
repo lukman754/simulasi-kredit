@@ -1,16 +1,8 @@
 import streamlit as st
-import locale
-
-# Set locale to Indonesian for Rupiah formatting
-locale.setlocale(locale.LC_ALL, 'id_ID.UTF-8')
 
 def format_rupiah(amount):
     """Format angka ke dalam mata uang Rupiah"""
-    try:
-        return locale.currency(amount, grouping=True, symbol=True)
-    except:
-        # Fallback formatting if locale fails
-        return f"Rp {amount:,.0f}"
+    return f"Rp {amount:,.0f}".replace(',', '.')
 
 def calculate_loan(principal, tenor, interest_rate):
     """Hitung simulasi kredit pinjaman"""
@@ -40,6 +32,34 @@ def main():
     st.set_page_config(page_title="Kalkulator Simulasi Kredit", page_icon="💰", layout="wide")
     
     st.title("🏦 Kalkulator Simulasi Kredit Pinjaman")
+    
+    # Styling dengan CSS
+    st.markdown("""
+    <style>
+    .big-font {
+        font-size:20px !important;
+        font-weight:bold;
+        color:#2C3E50;
+    }
+    .stNumberInput>div>div>input {
+        font-size:16px;
+        padding:10px;
+        border-radius:10px;
+    }
+    .stButton>button {
+        background-color:#3498DB;
+        color:white;
+        border-radius:10px;
+        font-weight:bold;
+    }
+    .stInfo {
+        background-color:#F1C40F;
+        color:black;
+        border-radius:10px;
+        padding:15px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
     
     # Kolom input dengan styling
     col1, col2, col3 = st.columns(3)
@@ -86,13 +106,22 @@ def main():
         cols = st.columns(3)
         
         with cols[0]:
-            st.info(f"**Bunga Bulanan**\n{format_rupiah(result['monthly_interest'])}")
+            st.metric(
+                label="Bunga Bulanan", 
+                value=format_rupiah(result['monthly_interest'])
+            )
         
         with cols[1]:
-            st.info(f"**Total Bunga**\n{format_rupiah(result['total_interest'])}")
+            st.metric(
+                label="Total Bunga", 
+                value=format_rupiah(result['total_interest'])
+            )
         
         with cols[2]:
-            st.info(f"**Total Pinjaman**\n{format_rupiah(result['total_amount'])}")
+            st.metric(
+                label="Total Pinjaman", 
+                value=format_rupiah(result['total_amount'])
+            )
         
         # Tabel rincian angsuran
         st.subheader("Rincian Angsuran")
