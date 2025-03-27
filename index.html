@@ -3,148 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kalkulator Simulasi Kredit Profesional</title>
+    <title>Kalkulator Kredit Kredivo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 </head>
-<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 min-h-screen flex items-center justify-center p-4 font-sans">
-    <div class="container mx-auto max-w-6xl">
-        <div class="bg-gray-800 rounded-2xl shadow-2xl overflow-hidden border-4 border-blue-600/20">
-            <div class="bg-gradient-to-r from-blue-600 to-purple-700 p-6">
-                <h1 class="text-4xl font-extrabold text-white text-center flex items-center justify-center gap-4">
-                    <i class="ri-bank-line"></i>
-                    Kalkulator Simulasi Kredit
-                </h1>
+<body class="dark:bg-gray-900 bg-gray-100 min-h-screen flex items-center justify-center p-4 font-sans transition-colors duration-300">
+    <div class="container mx-auto max-w-4xl">
+        <div class="dark:bg-gray-800 bg-white rounded-2xl shadow-2xl overflow-hidden">
+            <div class="flex justify-between items-center p-4 dark:bg-gray-700 bg-gray-200">
+                <h1 class="text-2xl font-bold dark:text-white text-gray-800">Kalkulator Kredit Kredivo</h1>
+                <button id="themeToggle" class="dark:text-white text-gray-700">
+                    <i class="ri-contrast-2-line text-2xl"></i>
+                </button>
             </div>
 
-            <div class="p-8">
-                <div class="grid md:grid-cols-3 gap-6 mb-8">
-                    <div class="bg-gray-700 p-5 rounded-xl shadow-lg">
-                        <label class="block text-sm font-semibold text-gray-300 mb-3 flex items-center">
-                            <i class="ri-money-dollar-circle-line mr-2"></i>
-                            Jumlah Dana Pinjaman
-                        </label>
+            <div class="p-6">
+                <div class="grid md:grid-cols-3 gap-4 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium dark:text-gray-300 text-gray-700 mb-2">Akun Kredivo</label>
+                        <select id="accountType" class="w-full dark:bg-gray-700 bg-gray-200 dark:text-white text-gray-800 rounded-lg py-2 px-3">
+                            <option value="premium">Premium/Premium Plus</option>
+                            <option value="basic">Basic</option>
+                            <option value="starter">Starter</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium dark:text-gray-300 text-gray-700 mb-2">Tenor (Bulan)</label>
+                        <select id="tenorInput" class="w-full dark:bg-gray-700 bg-gray-200 dark:text-white text-gray-800 rounded-lg py-2 px-3">
+                            <option value="1">1 Bulan</option>
+                            <option value="3">3 Bulan</option>
+                            <option value="6">6 Bulan</option>
+                            <option value="12">12 Bulan</option>
+                            <option value="18">18 Bulan</option>
+                            <option value="24">24 Bulan</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium dark:text-gray-300 text-gray-700 mb-2">Jumlah Pinjaman</label>
                         <input 
                             type="text" 
                             id="principalInput" 
                             placeholder="Masukkan nominal"
-                            class="w-full bg-gray-600 border-none text-white rounded-lg focus:ring-2 focus:ring-blue-500 py-3 px-4 text-lg tracking-wider"
+                            class="w-full dark:bg-gray-700 bg-gray-200 dark:text-white text-gray-800 rounded-lg py-2 px-3"
                         >
-                        <small class="text-gray-400 block mt-2">Minimal Rp 1.000.000</small>
-                    </div>
-                    
-                    <div class="bg-gray-700 p-5 rounded-xl shadow-lg">
-                        <label class="block text-sm font-semibold text-gray-300 mb-3 flex items-center">
-                            <i class="ri-calendar-line mr-2"></i>
-                            Tenor (Bulan)
-                        </label>
-                        <input 
-                            type="number" 
-                            id="tenorInput" 
-                            min="1" 
-                            max="60" 
-                            value="12"
-                            class="w-full bg-gray-600 border-none text-white rounded-lg focus:ring-2 focus:ring-blue-500 py-3 px-4 text-lg"
-                        >
-                        <small class="text-gray-400 block mt-2">Pilih 1-60 bulan</small>
-                    </div>
-                    
-                    <div class="bg-gray-700 p-5 rounded-xl shadow-lg">
-                        <label class="block text-sm font-semibold text-gray-300 mb-3 flex items-center">
-                            <i class="ri-percent-line mr-2"></i>
-                            Bunga Per Tahun
-                        </label>
-                        <input 
-                            type="number" 
-                            id="interestInput" 
-                            min="0.1" 
-                            max="50" 
-                            step="0.1" 
-                            value="2.49"
-                            class="w-full bg-gray-600 border-none text-white rounded-lg focus:ring-2 focus:ring-blue-500 py-3 px-4 text-lg"
-                        >
-                        <small class="text-gray-400 block mt-2">Rentang 0.1% - 50%</small>
                     </div>
                 </div>
                 
-                <div class="text-center mb-8">
+                <div class="text-center mb-6">
                     <button 
                         id="calculateBtn" 
-                        class="bg-gradient-to-r from-blue-600 to-purple-700 hover:from-blue-700 hover:to-purple-800 text-white font-bold py-3 px-12 rounded-xl transition duration-300 transform hover:scale-105 flex items-center mx-auto gap-3"
+                        class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-8 rounded-lg transition duration-300"
                     >
-                        <i class="ri-calculator-line text-xl"></i>
-                        Hitung Simulasi Kredit
+                        Hitung Simulasi
                     </button>
                 </div>
                 
                 <div id="resultSection" class="hidden">
-                    <div class="grid md:grid-cols-3 gap-6 mb-8">
-                        <div class="bg-gradient-to-br from-blue-600/30 to-purple-600/30 p-6 rounded-xl shadow-lg border border-blue-500/20 text-center">
-                            <h3 class="text-gray-300 mb-2 flex items-center justify-center gap-2">
-                                <i class="ri-exchange-dollar-line"></i>
-                                Bunga Bulanan
-                            </h3>
-                            <p id="monthlyInterestResult" class="text-2xl font-bold text-blue-300"></p>
+                    <div class="grid md:grid-cols-3 gap-4 mb-6">
+                        <div class="dark:bg-gray-700 bg-gray-200 p-4 rounded-lg text-center">
+                            <p class="text-sm dark:text-gray-400 text-gray-600">Bunga Bulanan</p>
+                            <p id="monthlyInterestResult" class="text-xl font-bold dark:text-white text-gray-800"></p>
                         </div>
-                        <div class="bg-gradient-to-br from-blue-600/30 to-purple-600/30 p-6 rounded-xl shadow-lg border border-blue-500/20 text-center">
-                            <h3 class="text-gray-300 mb-2 flex items-center justify-center gap-2">
-                                <i class="ri-bar-chart-line"></i>
-                                Total Bunga
-                            </h3>
-                            <p id="totalInterestResult" class="text-2xl font-bold text-blue-300"></p>
+                        <div class="dark:bg-gray-700 bg-gray-200 p-4 rounded-lg text-center">
+                            <p class="text-sm dark:text-gray-400 text-gray-600">Total Bunga</p>
+                            <p id="totalInterestResult" class="text-xl font-bold dark:text-white text-gray-800"></p>
                         </div>
-                        <div class="bg-gradient-to-br from-blue-600/30 to-purple-600/30 p-6 rounded-xl shadow-lg border border-blue-500/20 text-center">
-                            <h3 class="text-gray-300 mb-2 flex items-center justify-center gap-2">
-                                <i class="ri-wallet-3-line"></i>
-                                Total Pinjaman
-                            </h3>
-                            <p id="totalAmountResult" class="text-2xl font-bold text-blue-300"></p>
+                        <div class="dark:bg-gray-700 bg-gray-200 p-4 rounded-lg text-center">
+                            <p class="text-sm dark:text-gray-400 text-gray-600">Total Pembayaran</p>
+                            <p id="totalAmountResult" class="text-xl font-bold dark:text-white text-gray-800"></p>
                         </div>
                     </div>
                     
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <div class="bg-gray-700 p-6 rounded-xl shadow-lg">
-                            <h3 class="text-xl font-bold text-gray-300 mb-6 flex items-center gap-3">
-                                <i class="ri-bill-line"></i>
-                                Rincian Angsuran
-                            </h3>
-                            <div class="space-y-4">
-                                <div class="flex justify-between items-center bg-gray-800 p-4 rounded-lg">
-                                    <span class="text-gray-400">Bulanan</span>
-                                    <p id="monthlyInstallmentResult" class="font-bold text-white"></p>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="dark:bg-gray-700 bg-gray-200 p-4 rounded-lg">
+                            <h3 class="text-lg font-semibold dark:text-white text-gray-800 mb-4">Rincian Biaya</h3>
+                            <div class="space-y-2">
+                                <div class="flex justify-between">
+                                    <span class="dark:text-gray-400 text-gray-600">Angsuran Bulanan</span>
+                                    <span id="monthlyInstallmentResult" class="font-bold dark:text-white text-gray-800"></span>
                                 </div>
-                                <div class="flex justify-between items-center bg-gray-800 p-4 rounded-lg">
-                                    <span class="text-gray-400">Mingguan</span>
-                                    <p id="weeklyInstallmentResult" class="font-bold text-white"></p>
-                                </div>
-                                <div class="flex justify-between items-center bg-gray-800 p-4 rounded-lg">
-                                    <span class="text-gray-400">Harian</span>
-                                    <p id="dailyInstallmentResult" class="font-bold text-white"></p>
+                                <div class="flex justify-between">
+                                    <span class="dark:text-gray-400 text-gray-600">Biaya Admin</span>
+                                    <span id="adminFeeResult" class="font-bold dark:text-white text-gray-800"></span>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="bg-gray-700 p-6 rounded-xl shadow-lg">
-                            <h3 class="text-xl font-bold text-gray-300 mb-6 flex items-center gap-3">
-                                <i class="ri-pie-chart-line"></i>
-                                Grafik Perbandingan
-                            </h3>
-                            <canvas id="loanChart" class="w-full h-64"></canvas>
+                        <div class="dark:bg-gray-700 bg-gray-200 p-4 rounded-lg">
+                            <h3 class="text-lg font-semibold dark:text-white text-gray-800 mb-4">Grafik Pinjaman</h3>
+                            <canvas id="loanChart" class="w-full h-48"></canvas>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="text-center text-gray-400 mt-6 text-sm">
-            © 2024 Kalkulator Simulasi Kredit | Perhitungan Simulatif
-        </div>
     </div>
 
     <script>
-        // [Gunakan script dari contoh sebelumnya]
-        // Fungsi format Rupiah
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const htmlElement = document.documentElement;
+
+        themeToggle.addEventListener('click', () => {
+            htmlElement.classList.toggle('dark');
+            localStorage.setItem('theme', htmlElement.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // Set initial theme
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            htmlElement.classList.add('dark');
+        }
+
+        // Format Rupiah
         function formatRupiah(angka) {
             return new Intl.NumberFormat('id-ID', { 
                 style: 'currency', 
@@ -154,93 +127,100 @@
             }).format(angka);
         }
 
-        // Tambahkan event listener untuk format Rupiah saat input
-        const principalInput = document.getElementById('principalInput');
-        principalInput.addEventListener('input', function(e) {
-            // Hapus karakter non-angka
-            let value = this.value.replace(/[^\d]/g, '');
-            
-            // Format Rupiah
-            this.value = formatRupiah(value);
-        });
-
-        // Fungsi kalkulasi kredit
-        function calculateLoan() {
-            // Ambil nilai input dan bersihkan format Rupiah
-            const principal = parseFloat(principalInput.value.replace(/[^\d]/g, ''));
-            const tenor = parseFloat(document.getElementById('tenorInput').value);
-            const interestRate = parseFloat(document.getElementById('interestInput').value);
-
-            // Validasi input
-            if (isNaN(principal) || isNaN(tenor) || isNaN(interestRate)) {
-                alert('Silakan masukkan semua input dengan benar');
-                return;
+        // Interest rates and admin fees
+        const interestRates = {
+            premium: {
+                1: 0, 3: 0,
+                6: 1.99, 12: 2.49, 18: 2.60, 24: 2.99
+            },
+            basic: {
+                1: 0, 3: 4,
+                6: 1.99, 12: 2.49, 18: 2.60, 24: 2.99
+            },
+            starter: {
+                1: 0,
+                3: 4,
+                6: 4, 12: 4, 18: 4, 24: 4
             }
+        };
 
-            // Hitung simulasi kredit
+        const adminFees = {
+            premium: {
+                1: 0.01, 3: 0.03,
+                6: 0, 12: 0, 18: 0, 24: 0
+            },
+            basic: {
+                1: 0.01, 3: 0.01,
+                6: 0.01, 12: 0.01, 18: 0.01, 24: 0.01
+            },
+            starter: {
+                1: 0.01,
+                3: 0.01,
+                6: 0.01, 12: 0.01, 18: 0.01, 24: 0.01
+            }
+        };
+
+        // Loan calculation function
+        function calculateLoan() {
+            const principal = parseFloat(document.getElementById('principalInput').value.replace(/[^\d]/g, ''));
+            const tenor = parseFloat(document.getElementById('tenorInput').value);
+            const accountType = document.getElementById('accountType').value;
+
+            const interestRate = interestRates[accountType][tenor];
+            const adminFeeRate = adminFees[accountType][tenor];
+
             const monthlyInterest = principal * (interestRate / 100);
             const totalInterest = monthlyInterest * tenor;
-            const totalAmount = principal + totalInterest;
+            const adminFee = Math.max(principal * adminFeeRate, 1000);
+            const totalAmount = principal + totalInterest + adminFee;
             const monthlyInstallment = totalAmount / tenor;
-            const weeklyInstallment = monthlyInstallment / 4;
-            const dailyInstallment = monthlyInstallment / 30;
 
-            // Tampilkan hasil
             document.getElementById('monthlyInterestResult').textContent = formatRupiah(monthlyInterest);
             document.getElementById('totalInterestResult').textContent = formatRupiah(totalInterest);
             document.getElementById('totalAmountResult').textContent = formatRupiah(totalAmount);
-            
             document.getElementById('monthlyInstallmentResult').textContent = formatRupiah(monthlyInstallment);
-            document.getElementById('weeklyInstallmentResult').textContent = formatRupiah(weeklyInstallment);
-            document.getElementById('dailyInstallmentResult').textContent = formatRupiah(dailyInstallment);
+            document.getElementById('adminFeeResult').textContent = formatRupiah(adminFee);
 
-            // Tampilkan section hasil
             document.getElementById('resultSection').classList.remove('hidden');
 
-            // Buat grafik
-            createLoanChart(principal, totalInterest, totalAmount);
+            createLoanChart(principal, totalInterest, adminFee);
         }
 
-        // Fungsi buat chart
-        function createLoanChart(principal, totalInterest, totalAmount) {
+        // Chart creation function
+        function createLoanChart(principal, totalInterest, adminFee) {
             const ctx = document.getElementById('loanChart').getContext('2d');
             new Chart(ctx, {
                 type: 'pie',
                 data: {
-                    labels: ['Pokok Pinjaman', 'Total Bunga', 'Total Pembayaran'],
+                    labels: ['Pokok Pinjaman', 'Total Bunga', 'Biaya Admin'],
                     datasets: [{
-                        data: [principal, totalInterest, totalAmount],
+                        data: [principal, totalInterest, adminFee],
                         backgroundColor: [
-                            'rgba(75, 192, 192, 0.6)',
+                            'rgba(54, 162, 235, 0.6)',
                             'rgba(255, 99, 132, 0.6)',
-                            'rgba(54, 162, 235, 0.6)'
-                        ],
-                        borderColor: [
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)'
-                        ],
-                        borderWidth: 1
+                            'rgba(75, 192, 192, 0.6)'
+                        ]
                     }]
                 },
                 options: {
                     responsive: true,
                     plugins: {
                         legend: { 
-                            display: true,
                             labels: {
-                                color: 'white'
+                                color: document.documentElement.classList.contains('dark') ? 'white' : 'black'
                             }
-                        },
-                        title: {
-                            display: false
                         }
                     }
                 }
             });
         }
 
-        // Tambahkan event listener ke tombol
+        // Event listeners
+        document.getElementById('principalInput').addEventListener('input', function(e) {
+            let value = this.value.replace(/[^\d]/g, '');
+            this.value = formatRupiah(value);
+        });
+
         document.getElementById('calculateBtn').addEventListener('click', calculateLoan);
     </script>
 </body>
